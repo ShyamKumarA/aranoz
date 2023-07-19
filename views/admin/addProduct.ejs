@@ -1,0 +1,56 @@
+<%-include('../layouts/adminHeader.ejs')%>
+
+<!-- Table Start -->
+ <div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+
+
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">Add Product</h6>
+                <form action="/admin/addProduct" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label">Product name</label>
+                        <input type="String" class="form-control" name="name">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Images</label>
+                        <input class="form-control" type="file" id="formFileMultiple" multiple name="images"
+                            accept="image/*">
+                        <% if(typeof message !=='undefined' ){ %>
+                            <span>
+                                <%=message%>
+                            </span>
+                            <% } %>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <input type="String" class="form-control" name="description">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Price</label>
+                        <input type="String" class="form-control" name="price">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Stock</label>
+                        <input type="String" class="form-control" name="stock">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Category</label>
+                        <select class="form-select form-select-sm mb-3" aria-label=".form-select-sm example"
+                            name="category">
+                            <% category.forEach(function(category,index){ %>
+                                <option value=<%=category.categoryName%>><%=category.categoryName%>
+                                </option>
+                                <% }) %>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Table End -->
+<%-include('../layouts/adminFooter.ejs')%>
