@@ -1,0 +1,387 @@
+<%-include('../layouts/header.ejs')%>
+<style>
+    /* Custom radio button style */
+input[type="radio"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #ff3368; /* Set the border color to orange */
+  /* background-color: transparent; */
+  outline: none;
+  margin-right: 5px;
+}
+
+/* Custom radio button style when checked */
+input[type="radio"]:checked {
+  background-color:  #ff3368; /* Set the background color to orange when checked */
+}
+</style>
+<style>
+    .empty-heart {
+      color: #000; /* Change this to the color of an empty heart */
+    }
+  
+    .filled-heart {
+      color: red; /* Change this to the color of a filled heart */
+    }
+  </style>
+    <!--================Home Banner Area =================-->
+    <!-- breadcrumb start-->
+    <section class="breadcrumb breadcrumb_bg">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="breadcrumb_iner">
+                        <div class="breadcrumb_iner_item">
+                            <h2>Shop Category</h2>
+                            <p>Home <span>-</span> Shop Category</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb start-->
+
+    <!--================Category Product Area =================-->
+    <section class="cat_product_area section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="left_sidebar_area">
+                        <aside class="left_widgets p_filter_widgets">
+                            
+                            <div class="l_w_title">
+                                <h3>Browse Categories</h3>
+                            </div>
+
+                            <div class="widgets_inner">
+                                <ul class="list">
+                                    <li><a href="" onclick="filterSelection()"><div class="head mb-1">All Products</div></a></li>
+                                    
+                            <% if(category){ %>
+                                <% category.forEach(function(category,index){ %>
+                            
+                                    <li>
+                                        <input class="" type="radio" id="catId<%= category.categoryName %>" name="categoryFilter" value="<%= category.categoryName %>" onclick="filterAll()" >
+                                        <label class="ml-2" for="catId<%= category.categoryName %>"><%= category.categoryName %>(<%=category.product_count %>)</label>
+                                        
+                                    </li>
+
+                                    <% })}%>
+
+                                </ul>
+                            </div>
+                        </aside>
+
+                        <aside class="left_widgets p_filter_widgets">
+                            <div class="l_w_title">
+                                <h3>Price Filter</h3>
+                            </div>
+                            <div class="widgets_inner">
+                                
+                                        <ul class="list">
+                                            <li >
+                                                <input  type="radio" id="0 - 500" name="radioPrice" value="0,500" onclick="filterAll()">
+                                                <label class="ml-2" for="0 - 500">0 - 500 </label>
+                                            </li>
+                                            <li >
+                                                <input  type="radio" id="500 -1000" name="radioPrice" value="500,1000" onclick="filterAll()">
+                                                <label class="ml-2" for="500 -1000">500 -1000 </label>
+                                            </li>
+                                            <li >
+                                                <input  type="radio" id="1000 - 1500" name="radioPrice" value="1000,1500" onclick="filterAll()">
+                                                <label class="ml-2" for="1000 - 1500">1000 - 1500 </label>
+                                            </li>
+                                            <li >
+                                                <input  type="radio" id="1500 - 2000" name="radioPrice" value="1500,2000" onclick="filterAll()">
+                                                <label class="ml-2" for="1500 - 2000">1500 - 2000</label>
+                                            </li>
+                                            <li >
+                                                <input  type="radio" id="2000 - 2500" name="radioPrice" value="2000,2500" onclick="filterAll()">
+                                                <label class="ml-2" for="2000 - 2500">2000 - 2500</label>
+                                            </li>
+                                            <li >
+                                                <input  type="radio" id="2500 - 3000" name="radioPrice" value="2500,3000" onclick="filterAll()">
+                                                <label class="ml-2" for="2500 - 3000">2500 - 3000</label>
+                                            </li>
+                                            <li >
+                                                <input  type="radio" id="3000 - 3500" name="radioPrice" value="3000,3500" onclick="filterAll()">
+                                                <label class="ml-2" for="3000 - 3500">3000 - 3500</label>
+                                            </li>
+                                        </ul>
+                        </aside>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="product_top_bar d-flex justify-content-between align-items-center">
+                                <div class="single_product_menu">
+                                    <p><span>10000 </span> Product Found</p>
+                                </div>
+                                <div class="single_product_menu d-flex">
+                                    <h5>short by : </h5>
+                                    <select>
+                                        <option data-display="Select">name</option>
+                                        <option value="1">price</option>
+                                        <option value="2">product</option>
+                                    </select>
+                                </div>
+                                <div class="single_product_menu d-flex">
+                                    <h5>show :</h5>
+                                    <div class="top_pageniation">
+                                        <ul>
+                                            <li>1</li>
+                                            <li>2</li>
+                                            <li>3</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="single_product_menu d-flex">
+                                    <div class="input-group">
+                                        <% if(search){%>
+                                            <input type="text" id="myInput" placeholder="Search.." class="form-control mb-2 mt-2" value="<%= search %>" onkeyup="searchFunction()" list="productList">
+                                            <% }else{%>
+                                                <input type="text" id="myInput" placeholder="Search.." class="form-control mb-2 mt-2" value="<%= search %>" onkeyup="searchFunction()" list="productList">
+                                            <%} %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center latest_product_inner">
+                        <% if (products) { %>
+                            <% products.forEach(function (product, index) { %>
+                            <% if(product.status){ %>
+                                <div class="col-lg-3 col-sm-6 filterDiv <%= product.category %>">
+                                    <% if (product.discount > 0) { %>
+                                        <% let realPrice = (product.price*100)/(100-product.discount)%>
+                                        <div class="offer">
+                                            <i class="fas fa-tags"></i> Offer <%= product.discount %>%
+                                        </div>
+                                        <div class="single_product_item">
+                                            <a href="/single_product?id=<%= product._id %>"><img src="/product_images/<%= product.image[0] %>" alt=""></a>
+                                            <a href="/single_product?id=<%= product._id %>"><h5 class="font-weight-bold"><%= product.productName %></h5></a>
+                                            
+                                            <div class="single_product_text">
+                                                <div class="pricing">
+                                                    <h2 class="font-weight-bold"><span class="offer-price">₹<%=product.price %></span></h2>
+                                                    
+                                                    <span class="old-price">₹<%=realPrice %></span>
+                                                </div>  
+                                                <a href="" onclick="show('<%= product._id %>')" class="add_cart">+ Cart</a> <i onclick="wish('<%= product._id %>')" class="ti-heart empty-heart"></i>
+                                            </div>
+                                        </div>
+                                    <% } else { %>
+                                        <!-- If no discount, display the original price without modification -->
+                                        <div class="single_product_item">
+                                            <a href="/single_product?id=<%= product._id %>"><img src="/product_images/<%= product.image[0] %>" alt=""></a>
+                                            <a href="/single_product?id=<%= product._id %>"><h5 class="font-weight-bold"><%= product.productName %></h5></a>
+                                            
+                                            <div class="single_product_text">
+                                                <h2 class="font-weight-bold">₹<%= product.price %></h2>
+                                                <a href="" onclick="show('<%= product._id %>')" class="add_cart">+ Cart</a><i onclick="wish('<%= product._id %>')" class="ti-heart empty-heart"></i>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                </div>
+                                <% } %>
+                            <% }) %>
+                        <% } %>
+                        
+                                               
+                                               <div class="col-lg-12">
+                                                <div class="pageination">
+                                                    <nav aria-label="Page navigation example">
+                                                        <ul class="pagination justify-content-center">
+                                                            <% let currentPage = 1; %>
+                                                            <% const productsPerPage = 8; %>
+                                                            <% const totalPages = Math.ceil(products.length / productsPerPage); %>
+                                                            <% for (let page = 1; page <= totalPages; page++) { %>
+                                                                <li class="page-item <% if (currentPage === page) { %>active<% } %>">
+                                                                    <a class="page-link" href="#" onclick="changePage('<%= page %>')"><%= page %></a>
+                                                                </li>
+                                                            <% } %>
+                                                        </ul>
+                                                    </nav>
+                                                </div>
+                                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Category Product Area =================-->
+
+    <script>
+
+        function filterSelection() {
+            event.preventDefault()
+            const selectedRadioButton = document.querySelector('input[name="categoryFilter"]:checked');
+            console.log(selectedRadioButton)
+            if(selectedRadioButton){
+                selectedRadioButton.checked = false;
+                x = document.querySelectorAll(".filterDiv");
+                x.forEach(element => {
+                        element.removeAttribute("hidden");
+                });
+            }
+            
+            const selectedRadioButtonprice = document.querySelector('input[name="radioPrice"]:checked');
+            console.log(selectedRadioButtonprice)
+            if(selectedRadioButtonprice){
+            selectedRadioButtonprice.checked = false;
+            x = document.querySelectorAll(".filterDiv");
+                x.forEach(element => {
+                        element.removeAttribute("hidden");
+                });
+            }
+        }
+
+    </script>
+
+<script>
+    function filterAll(){
+        const selectedRadioButton = document.querySelector('input[name="categoryFilter"]:checked');
+        console.log(selectedRadioButton)
+        const selectedRadioButtonprice = document.querySelector('input[name="radioPrice"]:checked');
+        console.log(selectedRadioButtonprice)
+        if(selectedRadioButton){
+            const selectedValue = selectedRadioButton.value;
+            console.log(selectedValue)
+            x = document.querySelectorAll(".filterDiv");
+            // console.log(x);
+            x.forEach(element => {
+                if(element.className.indexOf(selectedValue)>-1){
+                    element.removeAttribute("hidden");
+                }else{
+                    element.setAttribute("hidden", "");
+                }
+            });
+        }
+        if(selectedRadioButtonprice){
+            const selectedPriceValue = selectedRadioButtonprice.value.split(",");
+            console.log(selectedPriceValue)
+            x = document.querySelectorAll(".filterDiv");
+            console.log(x);
+            x.forEach(element => {
+                const priceElement = element.querySelector(".single_product_item .single_product_text .price h2");
+                // const priceValue=priceElement.textContent;
+                // const priceValue=priceElement.textContent.match(/₹ (\d+)/);
+                let priceText = priceElement.innerText;
+                priceValue = priceText.replace('₹', '');
+
+                // const priceValue = priceElement.textContent.match(/₹ (\d+)/);
+
+
+                // let priceValue=priceElement
+                // console.log(priceValue);
+                console.log(priceValue);
+
+                if(parseInt(selectedPriceValue[0]) <priceValue && priceValue<=parseInt(selectedPriceValue[1])){
+                    console.log(selectedPriceValue[0]+"<"+priceValue+"<="+selectedPriceValue[1]);
+                    element.removeAttribute("hidden");
+                }else{
+                    element.setAttribute("hidden", "");
+                }
+            });
+        }
+        if(selectedRadioButton && selectedRadioButtonprice){
+            
+            const selectedValue = selectedRadioButton.value;
+            console.log(selectedValue)
+            const selectedPriceValue = selectedRadioButtonprice.value.split(",");
+            console.log(selectedPriceValue)
+            x = document.querySelectorAll(".filterDiv");
+            // console.log(x);
+            x.forEach(element => {
+                const priceElement = element.querySelector(".single_product_item .single_product_text .price h2");
+                let priceText = priceElement.innerText;
+                priceValue = priceText.replace('₹', '');
+                console.log(priceValue);
+                if(parseInt(selectedPriceValue[0]) <parseInt(priceValue) && parseInt(priceValue)<=parseInt(selectedPriceValue[1])
+                && element.className.indexOf(selectedValue)>-1){
+                    console.log(selectedPriceValue[0]+"<"+priceValue+"<="+selectedPriceValue[1]);
+                    element.removeAttribute("hidden");
+                }else{
+                    element.setAttribute("hidden", "");
+                }
+            });
+        }
+        
+    }
+   
+</script>
+
+
+
+
+<script>
+    function searchFunction(){
+        let  input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        x = document.querySelectorAll(".filterDiv");
+        x.forEach((element)=>{
+        let a = element.querySelector(".single_product_item .single_product_text h4");
+        txtValue = a.textContent || a.innerText;
+        console.log(txtValue);
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                element.style.display = "";
+            } else {
+                element.style.display = "none";
+            }  
+        })
+        // for (i = 0; i < li.length; i++) {
+        //     a = li[i].getElementsByTagName("a")[0];
+        //     txtValue = a.textContent || a.innerText;
+        //     if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        //         li[i].style.display = "";
+        //     } else {
+        //         li[i].style.display = "none";
+        //     }
+        // }
+    }
+    let ser=document.getElementById('myInput')
+    console.log(ser);
+    if(ser.value!=''){
+    searchFunction()
+}
+</script>
+
+
+<script>
+    function changePage(page) {
+        // Add logic to fetch the specific page of products from the server
+        // For example, you can make an AJAX request to get the products for the selected page.
+        // Once you get the products, update the product list on the page with the new data.
+        // For simplicity, I'll just show/hide products based on the current page and productsPerPage.
+        const products = document.querySelectorAll('.filterDiv');
+        const productsPerPage = 8;
+        const start = (page - 1) * productsPerPage;
+        const end = page * productsPerPage;
+
+        products.forEach((product, index) => {
+            if (index >= start && index < end) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+
+        // Optionally, you can set an active class to the clicked page link for visual feedback.
+        const pageLinks = document.querySelectorAll('.pagination .page-link');
+        pageLinks.forEach((link) => {
+            link.classList.remove('active');
+        });
+        pageLinks[page - 1].classList.add('active');
+    }
+    changePage(1)
+</script>
+   
+<%-include('../layouts/footer.ejs')%>

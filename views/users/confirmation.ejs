@@ -1,0 +1,124 @@
+<%-include('../layouts/header.ejs')%>
+ 
+ <!-- breadcrumb start-->
+ <section class="breadcrumb breadcrumb_bg">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="breadcrumb_iner">
+            <div class="breadcrumb_iner_item">
+              <h2>Order Confirmation</h2>
+              <p>Home <span>-</span> Order Confirmation</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- breadcrumb start-->
+ 
+ <!--================ confirmation part start =================-->
+  <section class="confirmation_part padding_top">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="confirmation_tittle">
+            <h3><span>Thank you. Your order has been received.</span></h3>
+          </div>
+        </div>
+        <div class="col-lg-6 col-lx-4">
+          <div class="single_confirmation_details">
+            <% function getDate(dbDate) { const dateObject=new Date(dbDate); const year=dateObject.getFullYear();
+              const month=dateObject.toLocaleString('en-us', { month: 'short' }); const day=dateObject.getDate();
+              const hours=dateObject.getHours(); const minutes=dateObject.getMinutes(); const
+              formattedDate=`${day} ${month} ${year} `; return formattedDate } %>
+            <h4>order info</h4>
+            <ul>
+              <li>
+                <p>order number</p><span>: <%=orderNum %></span>
+              </li>
+              <li>
+                <p>date</p><span>: <%=getDate(orderData.date) %></span>
+              </li>
+              <li>
+                <p>total</p><span>:₹<%=orderData.Amount %></span>
+              </li>
+              <li>
+                <p>payment method</p><span>:<%=orderData.paymentMethod%></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6 col-lx-4">
+          <div class="single_confirmation_details">
+            <h4>Billing Address</h4>
+            <ul>
+              <li>
+                <p>Name</p><span>:<%=orderData.deliveryAddress.userName%></span>
+              </li>
+              <li>
+                <p>Street</p><span>:<%=orderData.deliveryAddress.address%></span>
+              </li>
+              <li>
+                <p>city</p><span>:<%=orderData.deliveryAddress.city%></span>
+              </li>
+              <li>
+                <p>State</p><span>:<%=orderData.deliveryAddress.state%></span>
+              </li>
+              <li>
+                <p>postcode</p><span>:<%=orderData.deliveryAddress.pincode%></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="order_details_iner">
+            <h3>Order Details</h3>
+            <table class="table table-borderless">
+              <thead>
+                <tr>
+                  <th scope="col" colspan="2">Product</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% let totCount=0 %>
+                <% productData.products.forEach((product)=>{ %>
+                    <% totCount=totCount+product.count %>
+                    <%})%>
+                    <% let totamount=0 %>
+                    <% productData.products.forEach((product)=>{ %>
+                      <% totamount=totamount+product.totalPrice %>
+                      <%})%>
+                <% productData.products.forEach((product)=>{ %>
+                  <tr>
+                    <th colspan="2"><span><%=product.productId.productName%></span></th>
+                    <th>x<%=product.count%></th>
+                    <th> <span>₹<%=product.totalPrice%></span></th>
+                  </tr>
+                  <%})%>
+                <tfoot>
+                  <tr>
+                    <th scope="col" colspan="2">Quantity</th>
+                  <th ><%=totCount%></th>
+                    <th >₹<%=totamount%></th>
+                  </tr>
+                </tfoot>
+              </table>
+          </div>
+          <div class="checkout_btn_inner mt-4 float-right">
+            <a class="btn_1 checkout_btn_1" href="/exportInvoicePDF">Download Invoice</a>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+  </section>
+ 
+  <!--================ confirmation part end =================-->
+
+<%-include('../layouts/footer.ejs')%>

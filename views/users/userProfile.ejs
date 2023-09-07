@@ -1,0 +1,102 @@
+<%-include('../layouts/header.ejs')%>
+    
+ <!-- breadcrumb start-->
+ <section class="breadcrumb breadcrumb_bg">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="breadcrumb_iner">
+            <div class="breadcrumb_iner_item">
+              <h2>User Profile</h2>
+              <p>Home <span>-</span> Profile</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- breadcrumb start-->
+
+    <section class="login_box_area section_gap mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="contact__content">
+                        <div class="contact__address mt-5 ml-3">
+                            <h5>User Profile</h5>
+                            <ul>
+                                <li class="mt-5 d-flex">
+                                    <h6><i class="fa fa-user text-danger"></i> Name</h6>
+                                    <p class="ml-5">
+                                        <%=userDb.username%>    
+                                    </p>
+
+                                </li>
+                                <li class="mt-5 d-flex">
+                                    <h6><i class="fa fa-phone text-danger"></i> Phone</h6>
+                                    <p class="ml-5"><span>
+                                            <%=userDb.mobile%>
+                                        </span></p>
+                                </li>
+                                <li class="mt-5 d-flex">
+                                    <h6><i class="fa fa-envelope text-danger"></i> Email</h6>
+                                    <p class="ml-5">
+                                        <%=userDb.email%>
+                                    </p>
+                                </li>
+                                <li class="mt-5 d-flex">
+                                    <h6><i class="fa fa-wallet text-danger"></i> Wallet</h6>
+                                    <p class="ml-5">
+                                        <%=userDb.wallet%>
+                                    </p>
+                                </li>
+                                <li class="mt-5 d-flex" onclick="myFunction()">
+                                    <h6 ><i class="fas fa-share text-danger"></i>Click to Share</h6>
+                                    <input class="border-0 ml-4" type="text" value="http://localhost:3000/register?referel=<%=userDb._id%>" id="myInput" disabled>
+                                </li>
+                                <li class="mt-5 d-flex">
+                                    <button type="button" class="btn bg-white mt-5 ml-3 text-danger border-warning"
+                                        data-toggle="modal" data-target="#exampleModal">
+                                        <span class="lnr lnr-file-add"></span>
+                                        Add Address
+                                    </button>
+                                    <button type="button"
+                                        class="btn bg-white btn-primary mt-5 ml-3 text-danger border-warning"
+                                        data-toggle="modal" data-target="#editProfile">
+                                        <span class="lnr lnr-pencil"></span>
+                                        Edit profile
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+   
+
+
+
+
+    <script>
+        function myFunction() {
+        // Get the text field
+        var copyText = document.getElementById("myInput");
+
+        // Select the text field
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+
+        // Copy the text inside the text field
+        navigator.clipboard.writeText(copyText.value);
+
+        // Alert the copied text
+        alert("Copied the text: " + copyText.value);
+        // window.location.href='https://api.whatsapp.com/send/?text='+copyText.value
+        }
+    </script>
+
+<%-include('../layouts/footer.ejs')%>

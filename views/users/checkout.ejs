@@ -1,0 +1,464 @@
+<%-include('../layouts/header.ejs')%>
+ 
+ <!--================Checkout Area =================-->
+  <!-- breadcrumb start-->
+  <section class="breadcrumb breadcrumb_bg">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="breadcrumb_iner">
+            <div class="breadcrumb_iner_item">
+              <h2>Product Checkout</h2>
+              <p>Home <span>-</span> Shop Single</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- breadcrumb start-->
+ <section class="checkout_area padding_top">
+    <div class="container">
+      <!-- <div class="returning_customer">
+        <div class="check_title">
+          <h2>
+            Returning Customer?
+            <a href="#">Click here to login</a>
+          </h2>
+        </div>
+        <p>
+          If you have shopped with us before, please enter your details in the
+          boxes below. If you are a new customer, please proceed to the
+          Billing & Shipping section.
+        </p>
+        <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+          <div class="col-md-6 form-group p_star">
+            <input type="text" class="form-control" id="name" name="name" value=" " />
+            <span class="placeholder" data-placeholder="Username or Email"></span>
+          </div>
+          <div class="col-md-6 form-group p_star">
+            <input type="password" class="form-control" id="password" name="password" value="" />
+            <span class="placeholder" data-placeholder="Password"></span>
+          </div>
+          <div class="col-md-12 form-group">
+            <button type="submit" value="submit" class="btn_3">
+              log in
+            </button>
+            <div class="creat_account">
+              <input type="checkbox" id="f-option" name="selector" />
+              <label for="f-option">Remember me</label>
+            </div>
+            <a class="lost_pass" href="#">Lost your password?</a>
+          </div>
+        </form>
+      </div> -->
+
+
+
+      <!-- Modal for Address -->
+
+      <div class="modal fade" id="addAddressModal" tabindex="-1" role="dialog" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addAddressModalLabel">Add Address</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="addressForm" action="/post_address" method="post">
+                <div class="col-md-6 form-group p_star">
+                  <input type="text" class="form-control" id="first" placeholder="Full Name" name="name" />
+                </div>
+                <div class="col-md-6 form-group p_star">
+                  <input type="text" class="form-control" id="mobile" placeholder="Mobile Number" name="mobile" />
+                </div>
+                <div class="col-md-6 form-group p_star">
+                  <input type="text" class="form-control" placeholder="Alternative mobile" id="alterMobile" name="alterMobile" />
+                </div>
+                <div class="col-md-12 form-group p_star">
+                  <input type="text" class="form-control" id="address" name="address" placeholder="Address line 01" />
+                </div>
+                <div class="col-md-12 form-group p_star">
+                  <input type="text" class="form-control" id="city" placeholder="City" name="city" />
+                </div>
+                <div class="col-md-12 form-group p_star">
+                  <select class="State_select form-control" name="district">
+                    <option value="Calicut">Calicut</option>
+                    <option value="Kannur">Kannur</option>
+                    <option value="Malappuram">Malappuram</option>
+                  </select>
+                </div>
+                <div class="col-md-12 form-group p_star">
+                  <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Postcode/ZIP" />
+                </div>
+                <div class="col-md-12 form-group p_star">
+                  <input type="text" class="form-control" id="landmark" placeholder="Landmark" name="landmark" />
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary"  id="saveAddress">Save Address</button>
+                </div>
+              </form>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+
+
+      <!-- modal address ends -->
+
+
+
+            <!-- Modal for EditAddress -->
+            <% if(addressDb){ %>
+
+              <% addressDb.addresses.forEach((address,index)=>{ %>
+
+            <div class="modal fade" id="editAddressModal<%=index %>" tabindex="-1" role="dialog" aria-labelledby="editAddressModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="editAddressModalLabel">Edit Address</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="EditaddressForm" action="/post_editAddress?id=<%=address._id%>" method="post">
+                      <div class="col-md-6 form-group p_star">
+                        <input type="text" class="form-control" id="first" value="<%= address.userName %>" placeholder="Full Name" name="name" />
+                      </div>
+                      <div class="col-md-6 form-group p_star">
+                        <input type="text" class="form-control" id="mobile" value="<%= address.mobile %>" placeholder="Mobile Number" name="mobile" />
+                      </div>
+                      <div class="col-md-6 form-group p_star">
+                        <input type="text" class="form-control" value="<%= address.alternativeMob %>" placeholder="Alternative mobile" id="alterMobile" name="alterMobile" />
+                      </div>
+                      <div class="col-md-12 form-group p_star">
+                        <input type="text" class="form-control" value="<%= address.address %>" id="address" name="address" placeholder="Address line 01" />
+                      </div>
+                      <div class="col-md-12 form-group p_star">
+                        <input type="text" class="form-control" value="<%= address.city %>" id="city" placeholder="City" name="city" />
+                      </div>
+                      <div class="col-md-12 form-group p_star">
+                        <select class="State_select form-control" value="<%= address.state %>" name="district">
+                          <option value="Calicut">Calicut</option>
+                          <option value="Kannur">Kannur</option>
+                          <option value="Malappuram">Malappuram</option>
+                        </select>
+                      </div>
+                      <div class="col-md-12 form-group p_star">
+                        <input type="text" class="form-control" value="<%= address.pincode %>" id="pincode" name="pincode" placeholder="Postcode/ZIP" />
+                      </div>
+                      <div class="col-md-12 form-group p_star">
+                        <input type="text" class="form-control" value="<%= address.landmark %>" id="landmark" placeholder="Landmark" name="landmark" />
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary"  id="saveAddress">Save Address</button>
+                      </div>
+                    </form>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            <% }) %>
+            <% } %>
+      
+      
+            <!-- modal EditAddress ends -->
+
+
+
+
+<!-- modal starts -->
+      <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+          
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Your Coupons</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <% function getDate(dbDate) { const dateObject=new Date(dbDate); const year=dateObject.getFullYear();
+                    const month=dateObject.toLocaleString('en-us', { month: 'short' }); const day=dateObject.getDate();
+                    const hours=dateObject.getHours(); const minutes=dateObject.getMinutes(); const
+                    formattedDate=`${day} ${month} ${year} `; return formattedDate } %>
+                <table class="table" >
+                    <thead> 
+                       <tr>
+                            <th >Code</th>
+                            <th >Discount</th>
+                            <th >ExpDate</th>
+                            <th >&nbsp;</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if(couponData){ %>
+                            <%couponData.forEach(function(couponData){%>
+                                <a href="#" class="table-link" data-toggle="modal" data-target="#couponDetailsModal">
+                            <tr>
+                                <td><%=couponData.code%></td>
+                                <td>₹<%=couponData.discountAmount%></td>
+                                <td><%=getDate(couponData.expiryDate)%></td>
+                                <td >
+                                    <button class="btn btn-success text-white font-weight-bold apply-coupon" data-dismiss="modal" data-coupon="<%= couponData.code %>">
+                                        Apply
+                                    </button>
+                                  </td>
+                            </tr>
+                        </a>
+                                <%})%>
+                                <%}else{%>
+                                    <div><H3>Empty Coupon</H3></div>
+                                <%}%>
+                            </tbody>
+                        </table>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+<!-- modal ends -->
+
+
+
+     
+      <div class="billing_details">
+        <div class="row">
+          
+          <div class="col-lg-8">
+            <div class="order_box">
+              <% if(addressDb){ %>
+              <% addressDb.addresses.forEach((address, index) => { %>
+                  <div class="payment_item">
+                      <div class="radion_btn">
+                          <% if(index ==0 ){ %>
+                          <input type="radio" id="address'<%=address._id%>'" value="<%=address._id%>" name="address" checked>
+                          <% }else{%>
+                          <input type="radio" id="address'<%=address._id%>'" value="<%=address._id%>" name="address">
+                         <% } %>
+                          <label for="address'<%=address._id%>'">Address <%=index+1 %></label>
+                          <div class="check"></div>
+                      </div>
+                          <p><%= address.userName %>,<%= address.address %>,<%= address.city %>,<%= address.state %>,<%= address.pincode %> <br>contact :<%= address.mobile %> </p>
+                          <a class="mt-5 text-dark" data-toggle="modal" href="" data-target="#editAddressModal<%=index %>"><span class="lnr lnr-pencil"></span> Edit</a>
+                          <a class="mt-5 text-dark ml-3" href="" onclick="deleteAddress('<%=address._id%>')"><span class="lnr lnr-trash"></span> remove</a>
+                  </div>
+              <% }) %>
+              <% }else{ %>
+                <div class="payment_item">
+                  <div class="radion_btn">
+                    <input type="radio" id="address" value="" name="address" checked>
+                    <label for="address">Address 0</label>
+                    <div class="check"></div>
+                </div>
+                      <p>No Address </p>
+              </div>
+              <% } %>
+          </div>
+          <a class="mt-3 text-black-100 btn tp_btn border-warning" data-toggle="modal" data-target="#addAddressModal">
+            <span class="lnr lnr-file-add"></span> Add address
+          </a>
+          
+            
+          </div>
+          <div class="col-lg-4">
+            <div class="order_box">
+              <h2>Your Order</h2>
+             
+              <ul class="list">
+                <li>
+                  <a href="#"><b>Product</b> 
+                    <span><b>Total</b></span>
+                  </a>
+                </li>
+                <% products.forEach((product)=>{ %>
+                <li>
+                  <a href="#"><%=product.productId.productName%>
+                    <span class="middle">x<%=product.count%></span>
+                    <span class="last">₹<%=product.totalPrice%></span>
+                  </a>
+                </li>
+                <%})%>
+              </ul>
+              
+              <ul class="list list_2">
+                <li>
+                  <a href="#">Subtotal
+                    <span id="subtotal"><%=Total%></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">Coupon
+                    <span id="offAmount">0</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">Total
+                    <span id="Amount"><%=Total%></span>
+                  </a>
+                </li>
+              </ul>
+              <div class="payment_item">
+                <div class="radion_btn">
+                  <input type="radio" id="f-option5" value="COD" name="selector" />
+                  <label for="f-option5">Cash On Delivery</label>
+                  <div class="check"></div>
+                </div>
+                <p>
+                  Please send a check to Store Name, Store Street, Store Town,
+                  Store State / County, Store Postcode.
+                </p>
+              </div>
+              <div class="payment_item active">
+                <div class="radion_btn">
+                  <input type="radio" id="f-option6" name="selector" value="online" />
+                  <label for="f-option6">Razorpay </label>
+                  <img src="img/product/single-product/card.jpg" alt="" />
+                  <div class="check"></div>
+                </div>
+                <p>
+                  Please send a check to Store Name, Store Street, Store Town,
+                  Store State / County, Store Postcode.
+                </p>
+              </div>
+              <div class="creat_account">
+                <input type="checkbox" id="f-option4" name="selector" />
+                <label for="f-option4">I’ve read and accept the </label>
+                <a href="#">terms & conditions*</a>
+              </div>
+              <a class="btn_3" onclick="placeOrder()">Place Order</a>
+            </div>
+          </div>
+        
+      </div>
+      <div class="cupon_area">
+        <div class="check_title">
+          <h2>   
+            <a href="#" data-toggle="modal" data-target="#myModal">Click here to enter your code</a>
+          </h2>
+        </div>
+        <input type="text" disabled id="coupon" value="" placeholder="Enter coupon code" />
+        <a class="tp_btn" onclick="applycoupon()">Apply Coupon</a>
+      </div>
+      </div>
+    </div>
+  </section>
+  <!--================End Checkout Area =================-->
+
+  <script>
+    // Add an event listener to all "Apply" buttons
+    const applyButtons = document.querySelectorAll('.apply-coupon');
+    const couponInput = document.getElementById('coupon');
+
+    applyButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const couponCode = this.getAttribute('data-coupon');
+            couponInput.value = couponCode;
+        });
+    });
+</script>
+
+<script>
+
+function applycoupon(){
+    
+    const code=document.getElementById('coupon').value;
+    const amount = document.getElementById('Amount').innerHTML;
+    console.log(amount);
+    console.log(code);
+    $.ajax({
+      url:"/applyCoupon",
+      data:{  
+        code:code,
+        amount:amount
+      },
+      method:"post",
+      success:(response)=>{
+        console.log(response);
+        if(response.user){
+          console.log("This User already used this coupon");
+          document.getElementById('coupon').value=null
+          
+          Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'This coupon already used!'
+              })
+             
+        }else if(response.limit){
+          console.log("coupon limit exceeded");
+          Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'coupon limit exceeded!'
+              })
+              document.getElementById('coupon').value=null
+        }else if(response.status){
+          console.log("This coupon now not in use");
+          Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'coupon limit exceeded!'
+              })
+              document.getElementById('coupon').value=null
+        }else if(response.cartAmount){
+          console.log("You cant use the coupon...Buy more");
+          Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'You cant use the coupon...Buy more'
+              })
+              document.getElementById('coupon').value=null
+        }else if(response.date){
+          console.log("coupon date expired");
+          Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'date expired!!!'
+              })
+              document.getElementById('coupon').value=null
+        }else if(response.amountOkey){
+          console.log("discount granded");
+          document.getElementById('offAmount').innerHTML = response.disAmount
+          document.getElementById('Amount').innerHTML = response.disTotal
+          console.log("done");
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Discount redeemed',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }else if(response.invalid){
+          console.log("invalid coupon");
+          Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Invalid Coupon!!!'
+              })
+              document.getElementById('coupon').value=null
+        }
+      }
+    })
+  }
+
+</script>
+
+
+
+  <%-include('../layouts/footer.ejs')%>

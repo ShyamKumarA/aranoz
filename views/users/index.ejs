@@ -150,14 +150,38 @@
                                     <% products.forEach(function(product,index){%>
 
                                 <div class="col-lg-3 col-sm-6">
-                                    <div class="single_product_item">
-                                        <img src="/product_images/<%=product.image[0]%>" alt="">
-                                        <div class="single_product_text">
-                                            <a href="/single_product?id=<%=product._id %>" ><h4><%=product.productName%></h4></a>
-                                            <h3 class="font-weight-bold">₹<%=product.price %></h3>
-                                            <a href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
+                                    <% if (product.discount > 0) { %>
+                                        <% let discountedPrice = product.price - (product.price * (product.discount / 100));%>
+                                        <% let realPrice = (product.price*100)/(100-product.discount)%>
+                                        
+                                        <div class="offer">
+                                            <i class="fas fa-tags"></i> Offer <%= product.discount %>%
                                         </div>
-                                    </div>
+                                        <div class="single_product_item">
+                                            <a href="/single_product?id=<%= product._id %>"><img src="/product_images/<%= product.image[0] %>" alt=""></a>
+                                            <a href="/single_product?id=<%= product._id %>"><h5 class="font-weight-bold"><%= product.productName %></h5></a>
+                                            
+                                            <div class="single_product_text">
+                                                <div class="pricing">
+                                                    <h2 class="font-weight-bold"><span class="offer-price">₹<%=product.price %></span></h2>
+                                                    
+                                                    <span class="old-price">₹<%=realPrice %></span>
+                                                </div>  
+                                                <a href="" onclick="show('<%= product._id %>')" class="add_cart">+ Cart<i class="ti-heart"></i></a>
+                                            </div>
+                                        </div>
+                                    <% } else { %>
+                                        <!-- If no discount, display the original price without modification -->
+                                        <div class="single_product_item">
+                                            <a href="/single_product?id=<%= product._id %>"><img src="/product_images/<%= product.image[0] %>" alt=""></a>
+                                            <a href="/single_product?id=<%= product._id %>"><h5 class="font-weight-bold"><%= product.productName %></h5></a>
+                                            
+                                            <div class="single_product_text">
+                                                <h2 class="font-weight-bold">₹<%= product.price %></h2>
+                                                <a href="" onclick="show('<%= product._id %>')" class="add_cart">+ Cart<i class="ti-heart"></i></a>
+                                            </div>
+                                        </div>
+                                    <% } %>
                                 </div>
                             <% } )
                             }%>
@@ -177,7 +201,7 @@
                                         <div class="single_product_text">
                                             <a href="/single_product?id=<%=product._id %>" ><h4><%=product.productName%></h4></a>
                                             <h3 class="font-weight-bold">₹<%=product.price %></h3>
-                                            <a href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
+                                            <a href="/postCart?id=<%=product._id %>" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
                                         </div>
                                     </div>
                                 </div>

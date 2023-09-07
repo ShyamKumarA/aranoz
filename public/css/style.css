@@ -7789,4 +7789,36 @@ h6 {
   }
 }
 
+
+/* Add styles for the zoomed image */
+#vertical {
+  position: relative;
+  overflow: hidden;
+}
+
+#vertical img {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Zoom effect on hover */
+#vertical div:hover img {
+  transform: scale(1.2); /* Increase the value to increase the zoom effect */
+}
+
+.pricing {
+  display: flex;
+  flex-direction: column;
+}
+
+.offer-price {
+  color: green; /* Color for the offer price */
+}
+
+.old-price {
+  color: red; /* Color for the old price */
+  text-decoration: line-through; /* Add a line-through effect */
+}
+
+
+
 /*# sourceMappingURL=style.css.map */

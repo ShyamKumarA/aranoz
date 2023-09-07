@@ -25,7 +25,17 @@
                 <div class="login_part_text text-center">
                     <div class="login_part_text_iner">
                         <h2>Welcome to our Shop!</h2>
-                        <p>Enter the OTP received on your registered mobile number.</p>
+                        <p>Enter the OTP received on your registered Email id.</p>
+                        <!-- Countdown display -->
+                        <p id="countdown-message"></p>
+                        <!-- Use EJS conditionals to disable the button initially -->
+                    <!-- <-% if (countdownFinished) { %>
+                        <button type="submit" value="submit" id="verify-otp-btn" class="btn_3">Resend OTP</button>
+                    <-% } else { %> -->
+                        <input type="hidden" id="user_id" value="<%= user_id %>"> 
+                       <button type="submit" onclick="resendOTP()" value="submit" id="verify-otp-btn" class="btn_3" disabled>Resend OTP</button>
+                     
+                    <!-- <-% } %> -->
                     </div>
                 </div>
             </div>
@@ -38,10 +48,18 @@
                                 <input type="text" class="form-control" id="otp" name="otp" value=""
                                     placeholder="Enter OTP" required>
                             </div>
+                            <%if(typeof message !== undefined){%>
+                                <p style="color: red;"><%=message%></p>
+                              <%}%>
                             <div class="col-md-12 form-group">
                                 <button type="submit" value="submit" class="btn_3">Verify OTP</button>
                             </div>
                         </form>
+                         <!-- Countdown and Resend OTP section
+                         <p id="countdown-message"></p>
+                         <button type="button" onclick="resendOTP(' <-%= user_id %>')" id="resend-btn" class="btn_3">Resend OTP</button>
+                      -->
+                    
                     </div>
                 </div>
             </div>

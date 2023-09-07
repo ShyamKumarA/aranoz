@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Invoice document</title>
+    <link rel="icon" href="img/favicon.png">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/lightslider.min.css">
+    <!-- nice select CSS -->
+    <link rel="stylesheet" href="css/nice-select.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="css/all.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="css/slick.css">
+    <link rel="stylesheet" href="css/price_rangs.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- modal CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
+</head>
+
+<body>
+    <div id="spinner"
+            class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-danger" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+<section class="confirmation_part padding_top">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="confirmation_tittle">
+            <h3><span>Invoice</span></h3>
+          </div>
+        </div>
+        <div class="col-lg-6 col-lx-4">
+          <div class="single_confirmation_details">
+            <% function getDate(dbDate) { const dateObject=new Date(dbDate); const year=dateObject.getFullYear();
+              const month=dateObject.toLocaleString('en-us', { month: 'short' }); const day=dateObject.getDate();
+              const hours=dateObject.getHours(); const minutes=dateObject.getMinutes(); const
+              formattedDate=`${day} ${month} ${year} `; return formattedDate } %>
+            <h4>order info</h4>
+            <ul>
+              <li>
+                <p>order number</p><span>: <%=orderNum %></span>
+              </li>
+              <li>
+                <p>date</p><span>: <%=getDate(orderData.date) %></span>
+              </li>
+              <li>
+                <p>total</p><span>:₹<%=orderData.Amount %></span>
+              </li>
+              <li>
+                <p>payment method</p><span>:<%=orderData.paymentMethod%></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6 col-lx-4">
+          <div class="single_confirmation_details">
+            <h4>Billing Address</h4>
+            <ul>
+              <li>
+                <p>Name</p><span>:<%=orderData.deliveryAddress.userName%></span>
+              </li>
+              <li>
+                <p>Street</p><span>:<%=orderData.deliveryAddress.address%></span>
+              </li>
+              <li>
+                <p>city</p><span>:<%=orderData.deliveryAddress.city%></span>
+              </li>
+              <li>
+                <p>State</p><span>:<%=orderData.deliveryAddress.state%></span>
+              </li>
+              <li>
+                <p>postcode</p><span>:<%=orderData.deliveryAddress.pincode%></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="order_details_iner">
+            <h3>Order Details</h3>
+            <table class="table table-borderless">
+              <thead>
+                <tr>
+                  <th scope="col" colspan="2">Product</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% let totCount=0 %>
+                <% productData.products.forEach((product)=>{ %>
+                    <% totCount=totCount+product.count %>
+                    <%})%>
+                    <% let totamount=0 %>
+                    <% productData.products.forEach((product)=>{ %>
+                        <% totamount=totamount+product.totalPrice %>
+                        <%})%>
+                <% productData.products.forEach((product)=>{ %>
+                <tr>
+                  <th colspan="2"><span><%=product.productId.productName%></span></th>
+                  <th>x<%=product.count%></th>
+                  <th> <span>₹<%=product.totalPrice %></span></th>
+                </tr>
+                <%})%>
+              <tfoot>
+                <tr>
+                    <th scope="col" colspan="2">Quantity</th>
+                  <th ><%=totCount%></th>
+                  <th scope="col">₹<%=totamount%></th>
+                </tr>
+              </tfoot>
+            </table>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- jquery plugins here-->
+<script src="js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="js/lightslider.min.js"></script>
+<!-- swiper js -->
+<script src="js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/jquery.nice-select.min.js"></script>
+<!-- slick js -->
+<script src="js/slick.min.js"></script>
+<script src="js/jquery.counterup.min.js"></script>
+<script src="js/waypoints.min.js"></script>
+<script src="js/contact.js"></script>
+<script src="js/jquery.ajaxchimp.min.js"></script>
+<script src="js/jquery.form.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/mail-script.js"></script>
+<script src="js/stellar.js"></script>
+<script src="js/price_rangs.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- custom js -->
+<script src="js/theme.js"></script>
+<script src="js/custom.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<!-- form validation -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
+
+<!-- modal -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+</body>
+
+</html>

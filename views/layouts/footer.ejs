@@ -1,5 +1,5 @@
 <!--::footer_part start::-->
-<footer class="footer_part">
+<footer class="footer_part mt-5">
     <div class="container">
         <div class="row justify-content-around">
             <div class="col-sm-6 col-lg-2">
@@ -92,6 +92,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         </div>
     </div>
 </footer>
+
 <!--::footer_part end::-->
 
 <!-- jquery plugins here-->
@@ -102,6 +103,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="js/bootstrap.min.js"></script>
 <!-- easing js -->
 <script src="js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="js/lightslider.min.js"></script>
 <!-- swiper js -->
 <script src="js/swiper.min.js"></script>
 <!-- swiper js -->
@@ -118,8 +121,429 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="js/jquery.form.js"></script>
 <script src="js/jquery.validate.min.js"></script>
 <script src="js/mail-script.js"></script>
+<script src="js/stellar.js"></script>
+<script src="js/price_rangs.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- custom js -->
+<script src="js/theme.js"></script>
 <script src="js/custom.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<!-- form validation -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
+
+<!-- modal -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+    function placeOrder(){
+      
+          const selectedRadioButton = document.querySelector('input[name="address"]:checked');
+          const selectedaddress = selectedRadioButton.value;
+          const selectedPaymentButton = document.querySelector('input[name="selector"]:checked');
+          const selectedPayment = selectedPaymentButton.value;
+
+          const subTotalPrice = document.getElementById('subtotal').innerText
+          const discountPrice = document.getElementById('offAmount').innerText
+          const couponInput = document.getElementById('coupon').value
+          const totalamount = document.getElementById('Amount').innerText
+          
+    //   e.preventDefault();
+      $.ajax({
+        url:"/checkout",
+        method:"post",
+        data:{
+          amount:subTotalPrice,
+          total:totalamount,
+          discount:discountPrice,
+          address:selectedaddress,
+          payment:selectedPayment,
+          coupon:couponInput
+        },
+        success:(response)=>{
+            
+          if(response.codSuccess==true){
+            location.href = "/confirmation";
+          }else{
+            razorpayPayment(response.response);
+            
+          }
+        }
+      })
+    }
+  
+  
+
+
+function razorpayPayment(order){
+
+
+    var options = {
+        "key": "rzp_test_gsURN1Zv7sXXUx", // Enter the Key ID generated from the Dashboard
+        "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        
+        "currency": "INR",
+        "name": "Aranoz", //your business name
+        "description": "Test Transaction",
+        "image": "https://example.com/your_logo",
+        "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function (response){
+            verifyPayment(response, order)
+        },
+        "prefill": {
+            "name": "Gaurav Kumar", //your customer's name
+            "email": "gaurav.kumar@example.com",
+            "contact": "9000090000"
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+        rzp1.open();
+  }
+function verifyPayment(payment,order){
+    
+const amount = document.getElementById('subtotal').innerHTML;
+const amount2 = document.getElementById("Amount").innerHTML;
+$.ajax({
+url:"/verifyPayment",
+method:"post",
+data:{
+  payment,
+  amount,
+  amount2,
+  order
+},
+success:(response)=>{
+  if(response.success){
+    location.href = '/confirmation';
+  }else{
+    alert('payment failed');
+  }
+}
+})
+}
+</script>
+
+
+<script>
+     function orderReturn(id){
+        event.preventDefault();
+        const reasonInput = document.getElementById('reason').value;
+        const resonDiv = document.querySelector('.resonDiv');
+        resonDiv.removeAttribute('hidden');
+        resonDiv.classList.add('d-flex');
+        resonDiv.classList.add('justify-content-center');
+        resonDiv.classList.add('align-items-center');
+        if (reasonInput.trim() === '') {
+            Toastify({
+                        text: 'Please provide a reason for the return',
+                        backgroundColor: 'linear-gradient(to right, #fd7e14, #ffc107)',
+                        duration: 2000,
+                        close: true,
+                        gravity: 'top', 
+                        position: 'right', 
+                        // icon: '/static/logo/b.png',
+                        border: '1px solid #ccc',
+                        borderRadius: '10px', // Set border radius
+                        boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)', // Add a shadow
+                        animation: 'fade', // Choose an animation
+                        callback: function () { console.log('Toast shown!'); },
+                    }).showToast();
+            return;
+        }else{
+            const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger m-3'
+            },
+            buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, return it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+            }).then((result) => {
+            if (result.isConfirmed) {
+                axios.put('/returnOrder?id='+id,{reason:reasonInput})
+                .then((response)=>{
+                        location.reload();
+                }).catch(error => {
+                console.log(error);
+                });
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                'Cancelled',
+                'Your imaginary file is safe :)',
+                'error'
+                )
+            }
+        })
+        }
+        
+    }
+</script>
+
+
+
+
+<script>
+    function show(id){
+        event.preventDefault()
+        $.ajax({
+            url:"/postCart",
+            method:"post",
+            data:{
+                query:id
+            },
+            success:(response)=>{
+                if(response.success){
+                    Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Product added to cart',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                }else{
+                    window.location.href="/login"
+                }
+            }
+        })
+    }
+
+</script>
+
+
+<!-- Add to wishlist -->
+
+<script>
+    function wish(id) {
+      const heartIcon = document.querySelector(`[onclick="wish('${id}')"]`);
+      $.ajax({
+        url: "/addToWishlist",
+        method: "post",
+        data: {
+          query: id
+        },
+        success: (response) => {
+          if (response.success) {
+            // Change the heart icon to a filled heart
+            heartIcon.classList.remove("empty-heart");
+            heartIcon.classList.add("filled-heart");
+  
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Product added to wishlist',
+              showConfirmButton: false,
+              timer: 1500
+            });
+          } else if (response.check) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Already added to wishlist!!'
+            });
+          }
+        }
+      });
+    }
+  </script>
+
+// ----- cancel order
+<script>
+function plus(id){
+        event.preventDefault();
+        axios.post('/changeProductQuantity?id='+id, { productId: id ,i:1})
+            .then(function (response) {
+                // console.log(response);
+                if(response.data.success){
+
+                    $('#reloadDiv').load('/cart #reloadDiv',()=>{
+						
+					})
+                    // let cartSpan=document.getElementById('cartSpan')
+                    // cartSpan.removeAttribute("hidden");
+                    // cartSpan.innerHTML=parseInt(cartSpan.innerHTML)+1
+
+                    let quantityField=document.getElementById('quantity'+id)
+                    console.log(quantityField.value);
+                    quantityField.value=parseInt(quantityField.value)+1
+
+                    let totalPrice=document.getElementById('totalPrice'+id)
+                    totalPrice.innerHTML=parseInt(totalPrice.innerHTML)+response.data.priceOfOne
+
+                    let totalQuantity=document.getElementById('totalQuantity')
+                    totalQuantity.innerHTML=parseInt(totalQuantity.innerHTML)+1
+
+                    let subTotalPrice=document.getElementById('subTotalPrice')
+                    subTotalPrice.innerHTML=parseInt(subTotalPrice.innerHTML)+response.data.priceOfOne
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: response.data.message
+                        })
+                }
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
+    }
+
+    function minus(id){
+        
+        event.preventDefault();
+        axios.post('/changeProductQuantity?id='+id, { productId: id ,i:-1})
+            .then(function (response) {
+                // console.log(response);
+                if(response.data.success){
+
+                    $('#reloadDiv').load('/cart #reloadDiv',()=>{
+						
+					})
+
+                    // let cartSpan=document.getElementById('cartSpan')
+                    // cartSpan.removeAttribute("hidden");
+                    // cartSpan.innerHTML=parseInt(cartSpan.innerHTML)-1
+
+                    let quantityField=document.getElementById('quantity'+id)
+                    console.log(quantityField.value);
+                    quantityField.value=parseInt(quantityField.value)-1
+
+                    let totalPrice=document.getElementById('totalPrice'+id)
+                    totalPrice.innerHTML=parseInt(totalPrice.innerHTML)-response.data.priceOfOne
+
+                    let totalQuantity=document.getElementById('totalQuantity')
+                    totalQuantity.innerHTML=parseInt(totalQuantity.innerHTML)-1
+
+                    let subTotalPrice=document.getElementById('subTotalPrice')
+                    subTotalPrice.innerHTML=parseInt(subTotalPrice.innerHTML)-response.data.priceOfOne
+                }
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
+    }
+
+
+function cancel(id){
+        
+    event.preventDefault();
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger m-3'
+        },
+        buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, remove it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
+        }).then((result) => {
+           
+            console.log(result.isConfirmed);
+        if (result.isConfirmed) {
+            axios.post('/cancelOrder?id='+id)
+            .then((response)=>{
+                location.reload();
+            }).catch(error => {
+            console.log(error);
+            });
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+            'Cancelled',
+            'Your imaginary file is safe :)',
+            'error'
+            )
+        }
+    })
+
+
+
+
+
+    // remove address
+
+    
+}
+function deleteAddress(id){
+        
+        event.preventDefault();
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger m-3'
+            },
+            buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, remove it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+            }).then((result) => {
+            if (result.isConfirmed) {
+                axios.post('/deleteAddress?id='+id)
+                .then((response)=>{
+                    location.reload();
+                    }).catch(error => {
+                console.log(error);
+                });
+                    
+						
+				
+                    // var newAddressHtml = response.updatedAddressHTML;
+                    // $('.contact__address').html(newAddressHtml);
+                
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                'Cancelled',
+                'Your imaginary file is safe :)',
+                'error'
+                )
+            }
+        })
+    }
+</script>
+    
+
+
 <script>
     $(document).ready(function () {
         $("#sign_up").validate({
@@ -162,11 +586,302 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                     minlength: "Password must be at least 6 characters",
                     equalTo: "Passwords do not match"
                 }
+            }
+        });
+    });
+</script>
+
+
+<script>
+//     $(document).ready(function () {
+// $("#sign_up").validate({
+//             rules: {
+//                 username: "required",
+//                 email: {
+//                     required: true,
+//                     email: true
+//                 },
+//                 mobile: {
+//                     required: true,
+//                     minlength: 10
+//                 },
+//                 password: {
+//                     required: true,
+//                     minlength: 6
+//                 },
+//                 confirm_password: {
+//                     required: true,
+//                     minlength: 6,
+//                     equalTo: "#password"
+//                 }
+//             },
+//             messages: {
+//                 username: "Please enter your username",
+//                 email: {
+//                     required: "Please enter your email",
+//                     email: "Please enter a valid email address"
+//                 },
+//                 mobile: {
+//                     required: "Please enter your mobile number",
+//                     minlength: "Mobile number must be at least 10 digits"
+//                 },
+//                 password: {
+//                     required: "Please enter a password",
+//                     minlength: "Password must be at least 6 characters"
+//                 },
+//                 confirm_password: {
+//                     required: "Please confirm your password",
+//                     minlength: "Password must be at least 6 characters",
+//                     equalTo: "Passwords do not match"
+//                 }
+//             },
+            
+//         });
+//     });
+
+    $(document).ready(function () {
+$("#reset_password").validate({
+            rules: {
+                
+                new_password: {
+                    required: true,
+                    minlength: 6
+                },
+                confirm_password: {
+                    required: true,
+                    minlength: 6,
+                    equalTo: "#new_password"
+                }
+            },
+            messages: {
+                
+                new_password: {
+                    required: "Please enter a password",
+                    minlength: "Password must be at least 6 characters"
+                },
+                confirm_password: {
+                    required: "Please confirm your password",
+                    minlength: "Password must be at least 6 characters",
+                    equalTo: "Passwords do not match"
+                }
             },
             
         });
     });
-</script>
+
+
+
+    $(document).ready(function () {
+$("#forgot_password").validate({
+    
+    rules: {
+                email: {
+                    required: true,
+                    email: true
+                },
+            },
+            messages: {
+                email: {
+                    required: "Please enter your email",
+                    email: "Please enter a valid email address"
+                },
+            },
+            
+        });
+    });
+
+
+    $(document).ready(function () {
+$("#log_in").validate({
+            rules: {
+                name: "required",
+                name: {
+                    required: true,
+                    email: true
+                },
+                password: {
+                    required: true,
+                    minlength: 6
+                },
+            },
+            messages: {
+                name: {
+                    required: "Please enter your email",
+                    email: "Please enter a valid email address"
+                },
+                password: {
+                    required: "Please enter a password",
+                },
+            },
+            
+        });
+    });
+
+
+
+
+    // <!-- Place this script before the closing </body> tag -->
+
+  // Wait for the DOM to load
+  document.addEventListener("DOMContentLoaded", function() {
+    // Get all data-thumb divs
+    const dataThumbDivs = document.querySelectorAll('[data-thumb]');
+
+    // Add event listener for mouseenter (when the mouse moves over the data-thumb div)
+    dataThumbDivs.forEach(function(dataThumbDiv) {
+      dataThumbDiv.addEventListener("mouseenter", function() {
+        // Get the image path from the data-thumb attribute
+        const imagePath = dataThumbDiv.getAttribute("data-thumb");
+
+        // Get the corresponding image element
+        const imageElement = dataThumbDiv.querySelector('img');
+
+        // Change the source of the image to the data-thumb value
+        imageElement.src = imagePath;
+      });
+
+      // Add event listener for mouseleave (when the mouse moves out of the data-thumb div)
+      dataThumbDiv.addEventListener("mouseleave", function() {
+        // Get the original image path from the src attribute
+        const originalImagePath = dataThumbDiv.querySelector('img').getAttribute("src");
+
+        // Set the image source back to the original value
+        dataThumbDiv.querySelector('img').src = originalImagePath;
+      });
+    });
+  });
+
+
+   
+
+
+function resendOTP() {
+    const user_id = document.getElementById('user_id').value;
+    
+    
+  $.ajax({
+
+    url: '/resendOTP',
+    method: 'POST',
+    data: { id: user_id },
+    success: function (response) {
+        
+      console.log(response);
+      // You can update your page elements or show a success message here
+    },
+    error: function (error) {
+      console.log(error);
+    }
+  });
+}
+
+
+    
+    // function resendOTP(userId) {
+    // // Add your logic here to resend the OTP using AJAX or any other method
+    // console.log("Resend OTP for user with ID: " + userId);
+    // event.preventDefault();
+    //     axios.post('/resendOTP?id='+id)
+    //         .then(function (response) {
+    //             console.log(response);
+    //         }) .catch(function (error) {
+    //             console.error(error);
+    //         });
+    // }
+
+
+    // function addToCart(id){
+        
+    //     event.preventDefault();
+    //     axios.post('/postCart?id='+id, { productId: id })
+    //         .then(function (response) {
+    //             console.log(response);
+    //             // if(response.data.success){
+    //             //     let cartSpan=document.getElementById('cartSpan')
+    //             //     cartSpan.removeAttribute("hidden");
+    //             //     cartSpan.innerHTML=parseInt(cartSpan.innerHTML)+1
+    //             // }
+    //         })
+    //         .catch(function (error) {
+    //             console.error(error);
+    //         });
+    // }
+
+
+
+
+   </script>
+
+<!-- Add this script before the closing </body> tag -->
+<!-- Add this script before the closing </body> tag -->
+<script>
+    // Function to start the countdown timer
+    function startTimer(duration, display) {
+      let timer = duration;
+      let minutes, seconds;
+  
+      setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+  
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+  
+        display.textContent = "Resend OTP in " + minutes + ":" + seconds;
+  
+        if (--timer < 0) {
+          // Optionally, you can display a message when the countdown reaches zero
+          display.textContent = "Time Out";
+          // Countdown finished, enable the "Verify OTP" button
+          document.getElementById("verify-otp-btn").removeAttribute("disabled");
+        }
+      }, 1000);
+    }
+  
+    // Start the countdown when the page loads
+    // document.addEventListener("DOMContentLoaded", function () {
+      let countdownMinutes = 0;
+      let countdownSeconds = 30;
+      let countdownDuration = countdownMinutes * 60 + countdownSeconds;
+      let countdownDisplay = document.getElementById("countdown-message");
+      startTimer(countdownDuration, countdownDisplay);
+    // });
+  </script>
+  
+  
+   <!-- <script>
+    // Function to start the countdown timer
+    function startTimer(duration, display) {
+      let timer = duration;
+      let minutes, seconds;
+  
+      setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+  
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+  
+        display.textContent = "Resend OTP in " + minutes + ":" + seconds;
+  
+        if (--timer < 0) {
+          // Countdown finished, enable the "Verify OTP" button
+          document.getElementById("verify-otp-btn").removeAttribute("disabled");
+        }
+      }, 1000);
+    }
+  
+    // Start the countdown when the page loads
+    document.addEventListener("DOMContentLoaded", function () {
+      let countdownMinutes = 0;
+      let countdownSeconds = 30;
+      let countdownDuration = countdownMinutes * 60 + countdownSeconds;
+      let countdownDisplay = document.getElementById("countdown-message");
+      startTimer(countdownDuration, countdownDisplay);
+    });
+  </script> -->
+  
+  <!-- ... your other HTML code ... -->
 </body>
 
 </html>

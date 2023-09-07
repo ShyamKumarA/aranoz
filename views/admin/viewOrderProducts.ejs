@@ -1,0 +1,52 @@
+<%-include('../layouts/adminHeader.ejs')%>
+
+<!-- Table Start -->
+<div class="container-fluid pt-5 px-4">
+  <div class="test d-flex justify-content-between align-items-center">
+    <h1>Products</h1>
+  </div>
+
+  <div class="row pt-4 g-4">
+    <div class="col-12">
+      <div class="bg-light rounded h-100 p-4">
+        <table class="table" id="userTable">
+          <thead>
+            <tr>
+              <th scope="col">Product Name</th>
+              <th scope="col">&nbsp;</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Category</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% if(productData){ %> <% productData.forEach((pro)=>{%>
+            <tr>
+              <td><%= pro.productId.productName %></td>
+              <td>
+                <img
+                  src="/product_images/<%= pro.productId.image[0] %>"
+                  width="100px"
+                  height="120px"
+                  alt=""
+                />
+              </td>
+              <td>
+                <span>₹<%=pro.productId.price%></span>
+              </td>
+              <td><%=pro.count%></td>
+              <td><%=pro.productId.category%></td>
+            </tr>
+            <%})%> <% } else{ %>
+            <h2>no products</h2>
+
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Table End -->
+</div>
+<%-include('../layouts/adminFooter.ejs')%>

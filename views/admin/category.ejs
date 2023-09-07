@@ -1,73 +1,81 @@
 <%-include('../layouts/adminHeader.ejs')%>
-  <!-- Table Start -->
-  <div class="container-fluid pt-4 px-4">
-    <div class="row g-4">
-        
+<!-- Table Start -->
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+    <div class="col-12">
+      <a href="/admin/addCategory"
+        ><button type="button" class="btn btn-success m-2">
+          Add Category
+        </button></a
+      >
+      <div class="bg-light rounded h-100 p-4">
+        <h6 class="mb-4">Categories</h6>
+        <div class="table-responsive">
+          <%if(data.length > 0){%>
 
-       
-        
-        <div class="col-12">
-            <a href="/admin/addCategory"><button type="button" class="btn btn-success m-2">Add Category</button></a>
-            <div class="bg-light rounded h-100 p-4">
-                <h6 class="mb-4">Categories</h6>
-                <div class="table-responsive">
+          <table class="table" id="categoryTable">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Category</th>
+                <th scope="col">Count of Products</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%data.forEach(function(category,index){%>
+              <tr>
+                <td><%=index+1%></td>
+                <td><%=category.categoryName%></td>
+                <td><%=category.product_count%></td>
+                <td>
+                  <% if(category.is_blocked){%>
+                  <a href="/admin/categoryUnblock?id=<%=category._id%>"
+                    ><button
+                      type="button"
+                      class="btn btn-danger rounded-pill m-2"
+                    >
+                      Unlisted
+                    </button></a
+                  >
+                  <a href="/admin/editCategory?id=<%=category._id%>"
+                    ><button type="button" class="btn rounded-pill m-2">
+                      Edit
+                    </button></a
+                  >
 
-                    <%
-                         if(data.length > 0){
-                    %>
-                       
-                    <table class="table" id="categoryTable">
-                        <thead> 
-                           <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Category</th>
-                                <th scope="col">Action</th>
-                                
-                            </tr>   
-                        </thead>
-                        <tbody>
-                            
-                            <%data.forEach(function(user,index){%>
-                            <tr>
-                                
-                                <td><%=index+1%></td>
-                                <td><%=user.categoryName%></td>
-                                <%
-                                if(user.is_blocked){
-                                    %>
-                                    <td><a href="/admin/categoryUnblock?id=<%=user._id%>"><button type="button" class="btn btn-danger rounded-pill m-2">Unlisted</button></a> </td> 
+                  <%}else{%>
+                  <a
+                    href="/admin/categoryUnblock?id=<%=category._id%>"
+                    onclick="return confirm('Are you sure you want to Block this User?');"
+                    ><button
+                      type="button"
+                      class="btn btn-success rounded-pill m-2"
+                    >
+                      Listed
+                    </button></a
+                  >
+                  <a href="/admin/editCategory?id=<%=category._id%>"
+                    ><button type="button" class="btn rounded-pill m-2">
+                      Edit
+                    </button></a
+                  >
+                </td>
 
-                                    <%
-                                }else{
-                                    %>
-                                   <td><a href="/admin/categoryUnblock?id=<%=user._id%>" onclick="return confirm('Are you sure you want to Block this User?');"><button type="button" class="btn btn-success rounded-pill m-2">Listed</button></a> </td> 
+                <% } %>
+              </tr>
 
-                                    
-                                    <%
-                                }
-                                %>
-                                
-                                
-                            </tr>
-                            
-                            <%
-                             })%>
-                        </tbody>
-                    </table>
-                    
-                    <%
-                    }else{
-                    %>
-                        <div><H3>Category Empty</H3></div>
-                    <%
-                    }
-                    %>
-                </div>
-            </div>
+              <% })%>
+            </tbody>
+          </table>
+
+          <% }else{ %>
+          <div><H3>Category Empty</H3></div>
+          <% } %>
         </div>
-       
-        
+      </div>
     </div>
+  </div>
 </div>
 <!-- Table End -->
 <%-include('../layouts/adminFooter.ejs')%>

@@ -1,0 +1,78 @@
+<%-include('../layouts/header.ejs')%>
+
+<!--================Home Banner Area =================-->
+<section class="breadcrumb breadcrumb_bg">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="breadcrumb_iner">
+            <div class="breadcrumb_iner_item">
+              <h2>Wishlist</h2>
+              <p>Home <span>-</span>Wishlist</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<!-- breadcrumb end-->
+
+<!--================Wishlist Area =================-->
+<section class="wishlist_area padding_top">
+  <div class="container">
+    <div class="wishlist_inner">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Product</th>
+              <th scope="col">Price</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <% if(wish){ %>
+          <tbody>
+            <% wish.forEach((product)=>{ %>
+            <tr>
+              <td>
+                <div class="media">
+                  <div class="d-flex" style="width: 125px;">
+                    <img src="/product_images/<%=product.productId.image[0]%>" alt="" />
+                  </div>
+                  <div class="media-body">
+                    <h3><%=product.productId.productName%></h3>
+                    <p><%=product.productId.description%></p>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <h5>₹<%=product.productId.price%></h5>
+              </td>
+              <td>
+                <a class="btn btn-success text-white font-weight-bold" onclick="show('<%=product.productId._id %>')" href="">Add to Cart</a>
+              </td>
+              <td >
+                <a  class="btn btn-danger text-white font-weight-bold" href="/removewishProduct?id=<%=product.productId._id%>">Remove</a>
+              </td>
+            </tr>
+            <%})%>
+          </tbody>
+          <% }else{ %>
+            <tbody>
+                <tr>
+                    <td colspan="5" class="text-center" ><p style="font-family: Georgia, 'Times New Roman', Times, serif;font-size: 20px;">No Products</p></td>
+                </tr>
+            </tbody>
+
+            <% } %>
+        </table>
+      </div>
+      <div class="checkout_btn_inner float-right">
+        <a class="btn_1" href="/shop">Continue Shopping</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!--================End Wishlist Area =================-->
+
+<%-include('../layouts/footer.ejs')%>
