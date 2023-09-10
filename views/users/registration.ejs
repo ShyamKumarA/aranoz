@@ -37,28 +37,59 @@
                         <form class="row contact_form" action="/register" method="post" id="sign_up">
                             <div class="col-md-12 form-group">
                                 <input type="text" class="form-control" id="username" name="username" value=""
-                                    placeholder="Username" required>
+                                    placeholder="Username" >
+                                <span class="error" id="username_error"></span>
                             </div>
                             <div class="col-md-12 form-group">
                                 <input type="email" class="form-control" id="email" name="email" value=""
-                                    placeholder="Email" required>
+                                    placeholder="Email" >
+                                <span class="error" id="email_error"></span>
                             </div>
                             <div class="col-md-12 form-group">
                                 <input type="tel" class="form-control" id="mobile" name="mobile" value=""
-                                    placeholder="Mobile Number" required>
+                                    placeholder="Mobile Number" >
+                                <span class="error" id="mobile_error"></span>
                             </div>
                             <div class="col-md-12 form-group">
                                 <input type="password" class="form-control" id="password" name="password" value=""
-                                    placeholder="Password" required>
+                                    placeholder="Password" >
+                                <span class="error" id="password_error"></span>
                             </div>
                             <div class="col-md-12 form-group">
                                 <input type="password" class="form-control" id="confirm_password" name="confirm_password" value=""
-                                    placeholder="Confirm Password" required>
+                                    placeholder="Confirm Password" >
+                                <span class="error" id="confirm_password_error"></span>
                             </div>
                             <div class="col-md-12 form-group">
                                 <button type="submit" value="submit" class="btn_3">Sign Up</button>
                             </div>
                         </form>
+                        
+                        <!-- <form class="row contact_form" action="/register" method="post" id="sign_up">
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="username" name="username" value=""
+                                    placeholder="Username" >
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="email" class="form-control" id="email" name="email" value=""
+                                    placeholder="Email" >
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="tel" class="form-control" id="mobile" name="mobile" value=""
+                                    placeholder="Mobile Number" >
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="password" class="form-control" id="password" name="password" value=""
+                                    placeholder="Password" >
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" value=""
+                                    placeholder="Confirm Password" >
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <button type="submit" value="submit" class="btn_3">Sign Up</button>
+                            </div>
+                        </form> -->
                         <% if (typeof message !=='undefined' ) { %>
                             <p class="text-success">
                                 <%= message %>

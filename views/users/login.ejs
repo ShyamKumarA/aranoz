@@ -40,13 +40,13 @@
                     <div class="login_part_form_iner">
                         <h3>Welcome Back ! <br> 
                             Please Log in now</h3>
-                        <form class="row contact_form" action="/login" method="post" novalidate="novalidate" id="log_in">
+                        <!-- <form class="row contact_form" action="/login" method="post" novalidate="novalidate" id="log_in">
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="name" name="name" value="shyamkumarbeypore@gmail.com"
+                                <input type="text" class="form-control" id="name" name="name" value=""
                                     placeholder="Username">
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="password" class="form-control" id="password" name="password" value="123457"
+                                <input type="password" class="form-control" id="password" name="password" value=""
                                     placeholder="Password">
                             </div>
                             <div class="col-md-12 form-group">
@@ -57,12 +57,38 @@
                                 <button type="submit" value="submit" class="btn_3">
                                     log in
                                 </button>
-                                <%if(typeof message !== undefined){%>
-                                    <p style="color: red;"><%=message%></p>
-                                  <%}%>
+                                <-%if(typeof message !== undefined){%>
+                                    <p style="color: red;"><-%=message%></p>
+                                  <-%}%>
                                 <a class="lost_pass"  href="/forgot-password">forget password?</a>
                             </div>
                             
+                        </form> -->
+
+                        <form class="row contact_form" action="/login" method="post" novalidate="novalidate" id="log_in">
+                            <div class="col-md-12 form-group p_star">
+                                <input type="email" class="form-control" id="email" name="email" value=""
+                                    placeholder="Username">
+                                <span class="error" id="name_error"></span>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <input type="password" class="form-control" id="password" name="password" value=""
+                                    placeholder="Password">
+                                <span class="error" id="password_error"></span>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="creat_account d-flex align-items-center">
+                                    <input type="checkbox" id="f-option" name="selector">
+                                    <label for="f-option">Remember me</label>
+                                </div>
+                                <button type="submit" value="submit" class="btn_3">
+                                    Log In
+                                </button>
+                                <% if (typeof message !== undefined) { %>
+                                    <p style="color: red;"><%= message %></p>
+                                <% } %>
+                                <a class="lost_pass" href="/forgot-password">Forgot password?</a>
+                            </div>
                         </form>
                        
                     </div>

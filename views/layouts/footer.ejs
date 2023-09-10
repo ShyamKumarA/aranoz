@@ -119,7 +119,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="js/contact.js"></script>
 <script src="js/jquery.ajaxchimp.min.js"></script>
 <script src="js/jquery.form.js"></script>
-<script src="js/jquery.validate.min.js"></script>
+<!-- <script src="js/jquery.validate.min.js"></script> -->
 <script src="js/mail-script.js"></script>
 <script src="js/stellar.js"></script>
 <script src="js/price_rangs.js"></script>
@@ -131,8 +131,11 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <!-- form validation -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script> -->
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script> -->
 
 <!-- modal -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -542,11 +545,135 @@ function deleteAddress(id){
     }
 </script>
     
+<!-- validation signup -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.getElementById("sign_up");
+        const usernameInput = document.getElementById("username");
+        const emailInput = document.getElementById("email");
+        const mobileInput = document.getElementById("mobile");
+        const passwordInput = document.getElementById("password");
+        const confirmPasswordInput = document.getElementById("confirm_password");
+        
+        const usernameError = document.getElementById("username_error");
+        const emailError = document.getElementById("email_error");
+        const mobileError = document.getElementById("mobile_error");
+        const passwordError = document.getElementById("password_error");
+        const confirmPasswordError = document.getElementById("confirm_password_error");
+
+        form.addEventListener("submit", function(event) {
+            let isValid = true;
+
+            // Validate username (you can add more specific checks)
+            if (usernameInput.value.trim() === "") {
+                usernameError.textContent = "Please enter a username.";
+                isValid = false;
+            } else {
+                usernameError.textContent = "";
+            }
+
+            // Validate email using a regular expression
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (!emailRegex.test(emailInput.value)) {
+                emailError.textContent = "Please enter a valid email address.";
+                isValid = false;
+            } else {
+                emailError.textContent = "";
+            }
+
+            // Validate mobile number (you can add more specific checks)
+            if (mobileInput.value.trim() === "") {
+                mobileError.textContent = "Please enter a mobile number.";
+                isValid = false;
+            } else {
+                mobileError.textContent = "";
+            }
+            const mobileValue = mobileInput.value.trim();
+            if (!/^\d{10}$/.test(mobileValue)) {
+                mobileError.textContent = "Mobile number must be a 10-digit integer.";
+                isValid = false;
+            } else {
+                mobileError.textContent = "";
+            }
+
+
+            // Validate password (you can add more specific checks)
+            if (passwordInput.value.trim() === "") {
+                passwordError.textContent = "Please enter a password.";
+                isValid = false;
+            } else {
+                passwordError.textContent = "";
+            }
+
+            // Validate password confirmation
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                confirmPasswordError.textContent = "Passwords do not match.";
+                isValid = false;
+            } else {
+                confirmPasswordError.textContent = "";
+            }
+
+            if (!isValid) {
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+    });
+</script>
+
+  <!-- validation for login -->
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.getElementById("log_in");
+        const nameInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+
+        const nameError = document.getElementById("name_error");
+        const passwordError = document.getElementById("password_error");
+
+        form.addEventListener("submit", function(event) {
+            let isValid = true;
+             // Validate email using a regular expression
+             const emailRege = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (!emailRege.test(nameInput.value)) {
+                nameError.textContent = "Please enter a valid email address.";
+                isValid = false;
+            } else {
+                nameError.textContent = "";
+            }
+            // // Validate username (you can add more specific checks)
+            // if (nameInput.value.trim() === "") {
+            //     nameError.textContent = "Please enter a username.";
+            //     isValid = false;
+            // } else {
+            //     nameError.textContent = "";
+            // }
+
+            // Validate password (you can add more specific checks)
+            if (passwordInput.value.trim() === "") {
+                passwordError.textContent = "Please enter a password.";
+                isValid = false;
+            } else {
+                passwordError.textContent = "";
+            }
+
+            if (!isValid) {
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+    });
+</script>
 
 
 <script>
     $(document).ready(function () {
+        // alert("hsi")
+        try {
+  jQuery.validator.addMethod("noSpace", function(value, element) {
+    return value.trim().length != 0 ;
+  }, "No space please and don't leave it empty");
         $("#sign_up").validate({
+
             rules: {
                 username: "required",
                 email: {
@@ -588,58 +715,7 @@ function deleteAddress(id){
                 }
             }
         });
-    });
-</script>
-
-
-<script>
-//     $(document).ready(function () {
-// $("#sign_up").validate({
-//             rules: {
-//                 username: "required",
-//                 email: {
-//                     required: true,
-//                     email: true
-//                 },
-//                 mobile: {
-//                     required: true,
-//                     minlength: 10
-//                 },
-//                 password: {
-//                     required: true,
-//                     minlength: 6
-//                 },
-//                 confirm_password: {
-//                     required: true,
-//                     minlength: 6,
-//                     equalTo: "#password"
-//                 }
-//             },
-//             messages: {
-//                 username: "Please enter your username",
-//                 email: {
-//                     required: "Please enter your email",
-//                     email: "Please enter a valid email address"
-//                 },
-//                 mobile: {
-//                     required: "Please enter your mobile number",
-//                     minlength: "Mobile number must be at least 10 digits"
-//                 },
-//                 password: {
-//                     required: "Please enter a password",
-//                     minlength: "Password must be at least 6 characters"
-//                 },
-//                 confirm_password: {
-//                     required: "Please confirm your password",
-//                     minlength: "Password must be at least 6 characters",
-//                     equalTo: "Passwords do not match"
-//                 }
-//             },
-            
-//         });
-//     });
-
-    $(document).ready(function () {
+        // $(document).ready(function () {
 $("#reset_password").validate({
             rules: {
                 
@@ -667,12 +743,9 @@ $("#reset_password").validate({
             },
             
         });
-    });
+    // });
 
-
-
-    $(document).ready(function () {
-$("#forgot_password").validate({
+    $("#forgot_password").validate({
     
     rules: {
                 email: {
@@ -687,12 +760,8 @@ $("#forgot_password").validate({
                 },
             },
             
-        });
-    });
-
-
-    $(document).ready(function () {
-$("#log_in").validate({
+        });   
+        $("#log_in").validate({
             rules: {
                 name: "required",
                 name: {
@@ -715,102 +784,16 @@ $("#log_in").validate({
             },
             
         });
-    });
 
 
-
-
-    // <!-- Place this script before the closing </body> tag -->
-
-  // Wait for the DOM to load
-  document.addEventListener("DOMContentLoaded", function() {
-    // Get all data-thumb divs
-    const dataThumbDivs = document.querySelectorAll('[data-thumb]');
-
-    // Add event listener for mouseenter (when the mouse moves over the data-thumb div)
-    dataThumbDivs.forEach(function(dataThumbDiv) {
-      dataThumbDiv.addEventListener("mouseenter", function() {
-        // Get the image path from the data-thumb attribute
-        const imagePath = dataThumbDiv.getAttribute("data-thumb");
-
-        // Get the corresponding image element
-        const imageElement = dataThumbDiv.querySelector('img');
-
-        // Change the source of the image to the data-thumb value
-        imageElement.src = imagePath;
-      });
-
-      // Add event listener for mouseleave (when the mouse moves out of the data-thumb div)
-      dataThumbDiv.addEventListener("mouseleave", function() {
-        // Get the original image path from the src attribute
-        const originalImagePath = dataThumbDiv.querySelector('img').getAttribute("src");
-
-        // Set the image source back to the original value
-        dataThumbDiv.querySelector('img').src = originalImagePath;
-      });
-    });
-  });
-
-
-   
-
-
-function resendOTP() {
-    const user_id = document.getElementById('user_id').value;
-    
-    
-  $.ajax({
-
-    url: '/resendOTP',
-    method: 'POST',
-    data: { id: user_id },
-    success: function (response) {
-        
-      console.log(response);
-      // You can update your page elements or show a success message here
-    },
-    error: function (error) {
-      console.log(error);
-    }
-  });
+    } catch (error) {
+    console.log(error)
 }
-
-
-    
-    // function resendOTP(userId) {
-    // // Add your logic here to resend the OTP using AJAX or any other method
-    // console.log("Resend OTP for user with ID: " + userId);
-    // event.preventDefault();
-    //     axios.post('/resendOTP?id='+id)
-    //         .then(function (response) {
-    //             console.log(response);
-    //         }) .catch(function (error) {
-    //             console.error(error);
-    //         });
-    // }
-
-
-    // function addToCart(id){
-        
-    //     event.preventDefault();
-    //     axios.post('/postCart?id='+id, { productId: id })
-    //         .then(function (response) {
-    //             console.log(response);
-    //             // if(response.data.success){
-    //             //     let cartSpan=document.getElementById('cartSpan')
-    //             //     cartSpan.removeAttribute("hidden");
-    //             //     cartSpan.innerHTML=parseInt(cartSpan.innerHTML)+1
-    //             // }
-    //         })
-    //         .catch(function (error) {
-    //             console.error(error);
-    //         });
-    // }
+    });
+</script>
 
 
 
-
-   </script>
 
 <!-- Add this script before the closing </body> tag -->
 <!-- Add this script before the closing </body> tag -->
@@ -841,12 +824,14 @@ function resendOTP() {
     // Start the countdown when the page loads
     // document.addEventListener("DOMContentLoaded", function () {
       let countdownMinutes = 0;
-      let countdownSeconds = 30;
+      let countdownSeconds = 60;
       let countdownDuration = countdownMinutes * 60 + countdownSeconds;
       let countdownDisplay = document.getElementById("countdown-message");
       startTimer(countdownDuration, countdownDisplay);
     // });
   </script>
+
+
   
   
    <!-- <script>

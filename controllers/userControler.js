@@ -248,7 +248,7 @@ const insertUser = async (req, res) => {
           let id = otpDb._id;
           await otpModel.findByIdAndRemove(id);
           console.log("timer end");
-        }, 30000);
+        }, 60000);
         res.render("otpPage", {
           customer: "",
           user_id: userData._id,
@@ -279,7 +279,7 @@ const verifyMail = async (req, res) => {
     let otpDb = await otpModel.findOne({ email: tempMail });
     if (timer) {
       if (otpRecieved == otpDb.otp) {
-        //let id=otpDb._id
+        let id=otpDb._id
         await User.updateOne({ email: tempMail }, { $set: { is_verified: 1 } });
         //  console.log(updateInfo);
         //await otpModel.findByIdAndRemove(id)
@@ -322,7 +322,7 @@ const resendOTP = async (req, res) => {
           let id = otpDb._id;
           await otpModel.findByIdAndRemove(id);
           console.log("timer end");
-        }, 30000);
+        }, 60000);
         res.render("otpPage", {
           customer: "",
           user_id: userData._id,
@@ -351,11 +351,10 @@ const resendOTP = async (req, res) => {
 
 const verifyUser = async (req, res) => {
   try {
-    const email = req.body.name;
+    const email = req.body.email;
     const password = req.body.password;
 
     const userData = await User.findOne({ email: email });
-    const id = userData._id;
     if (userData) {
       if (userData.is_verified == 1) {
         if (userData) {
@@ -399,9 +398,9 @@ const verifyUser = async (req, res) => {
           let id = otpDb._id;
           await otpModel.findByIdAndRemove(id);
           console.log("timer end");
-        }, 30000);
+        }, 60000);
         res.render("otpPage", {
-          user_id: id,
+          user_id: userData._id,
           customer: "",
           count: "",
           message: "",
@@ -415,7 +414,7 @@ const verifyUser = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 };
 
