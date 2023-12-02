@@ -87,6 +87,8 @@ const postCart = async (req, res) => {
             { userId: userId, "products.productId": productId },
             { $inc: { "products.$.count": 1 } }
           );
+          const productCount=await (cartData.products).length;
+          console.log(productCount);
           res.json({ success: true });
         } else {
           await Cart.findOneAndUpdate(
@@ -101,7 +103,9 @@ const postCart = async (req, res) => {
               },
             }
           );
-          res.json({ success: true });
+          const productCount=await (cartData.products).length;
+          console.log(productCount);
+          res.json({ success: true,count:productCount });
         }
       } else {
         const cart = new Cart({

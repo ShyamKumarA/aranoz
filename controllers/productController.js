@@ -23,6 +23,7 @@ const getAddProduct = async (req, res) => {
 
 const postAddProduct = async (req, res) => {
   try {
+    console.log(req.body);
     const image = [];
     for (let i = 0; i < req.files.length; i++) {
       image[i] = req.files[i].filename;
